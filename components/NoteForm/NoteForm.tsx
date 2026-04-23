@@ -27,7 +27,7 @@ export default function NoteForm() {
         });
 
         clearDraft();
-        router.push('notes');
+        router.push('/notes');
     }
 
     return (
@@ -50,7 +50,7 @@ export default function NoteForm() {
             <div className={css.formGroup}>
                 <label htmlFor="content">Content</label>
                 <textarea
-                    id="textarea"
+                    id="content"
                     name="content"
                     rows={8}
                     className={css.textarea}

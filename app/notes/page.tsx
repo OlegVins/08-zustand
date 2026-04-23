@@ -10,5 +10,12 @@ export default async function NotesPage({
     const resolvedSearchParams = await searchParams;
     const tag = resolvedSearchParams.tag;
     
-    return <NotesClient tag={tag} />;
+    return (
+        <>
+            <NotesClient tag={tag} />;
+            {
+                
+            }
+        </>
+    );
 }

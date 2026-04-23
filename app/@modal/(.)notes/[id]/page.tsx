@@ -11,18 +11,20 @@ export default async function ModalNotePage({ params }: Props) {
   const { id } = await params;
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  try {
+     await queryClient.prefetchQuery({
     queryKey: ['note', id ],
     queryFn: () => fetchNoteById(id),
   });
+  } catch (e) {
+    console.error('Prefetch error:', e);
+  }
 
   return (
-    <div key={id}>
       <HydrationBoundary state={dehydrate(queryClient)}>
           <ModalWrapper>
               <NotePreview id={id} /> 
           </ModalWrapper>   
     </HydrationBoundary>
-    </div>
   );
 }

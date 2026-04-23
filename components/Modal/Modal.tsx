@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import css from './Modal.module.css';
 
@@ -9,14 +9,15 @@ interface ModalProps {
     onClose: () => void;
 }
 
+const subscribe = () => () => { };
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export default function Modal({ children, onClose }: ModalProps) {
-    const [container, setContainer] = useState<HTMLElement | null>(null);
+    const isClient = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
     useEffect(() => {
-        Promise.resolve().then(() => {
-            const target = document.getElementById('modal-root');
-            if (target) setContainer(target);
-        });
+        if (!isClient) return;
 
         document.body.style.overflow = 'hidden';
 
@@ -30,9 +31,11 @@ export default function Modal({ children, onClose }: ModalProps) {
               document.body.style.overflow = '';
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [onClose]);
+    }, [isClient, onClose]);
 
-    if (!container) return null;
+    if (!isClient) return null;
+
+    const container = document.getElementById('modal-root') || document.body;
 
         const handleBackdropClick = (
         e: React.MouseEvent<HTMLDivElement>

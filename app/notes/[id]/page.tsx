@@ -10,15 +10,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
 
+  const note = await fetchNoteById(id);
+
   return {
-    title: `Note ${id}`,
-    description: `Details of note ${id}`,
+    title: note.title,
+    description: note.content,
     openGraph: {
-      title: `Note ${id}`,
-      description: `Details of note ${id}`,
+      title: note.title,
+      description: note.content,
       url: `https://notehub.app/notes/${id}`,
       images: [
-        'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        {
+          url:
+            'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        },
       ],
     },
   };
